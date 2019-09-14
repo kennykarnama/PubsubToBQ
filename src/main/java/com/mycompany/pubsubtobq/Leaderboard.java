@@ -12,6 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
+import java.nio.charset.StandardCharsets;
 import org.apache.avro.reflect.Nullable;
 import org.apache.beam.sdk.coders.AvroCoder;
 import org.apache.beam.sdk.coders.DefaultCoder;
@@ -42,7 +43,7 @@ public class Leaderboard {
             try {
                 PubsubMessage message = c.element();
                 
-                String payload = message.getPayload().toString();
+                String payload = new String(message.getPayload(), StandardCharsets.UTF_8);
                 
                 Gson gson = new Gson();
                 

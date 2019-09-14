@@ -14,6 +14,8 @@ import org.apache.beam.sdk.options.PipelineOptions;
  */
 public interface PubsubToBQOptions extends PipelineOptions{
     
+    
+    
     @Description("Input topic pubsub for the pipeline")
     String getPubsubTopic();
     void setPubsubTopic(String pubsubTopic);
