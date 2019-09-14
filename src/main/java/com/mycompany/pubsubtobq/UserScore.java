@@ -7,6 +7,7 @@ package com.mycompany.pubsubtobq;
 
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
+import org.apache.avro.reflect.Nullable;
 import org.apache.beam.sdk.coders.AvroCoder;
 import org.apache.beam.sdk.coders.DefaultCoder;
 
@@ -18,22 +19,31 @@ import org.apache.beam.sdk.coders.DefaultCoder;
 public class UserScore implements Serializable{
 
         @SerializedName("eventSerial")
+        @Nullable
         private String eventSerial;
         @SerializedName("segmentSerial")
+        @Nullable
         private String segmentSerial;
         @SerializedName("userSerial")
+        @Nullable
         private String userSerial;
         @SerializedName("duration")
+        @Nullable
         private String duration;
         @SerializedName("score")
+        @Nullable
         private Float score;
         @SerializedName("scoreMultiplier")
+        @Nullable
         private Float scoreMultiplier;
         @SerializedName("createdAt")
+        @Nullable
         private String createdAt;
         @SerializedName("updatedAt")
+        @Nullable
         private String updatedAt;
         @SerializedName("schoolID")
+        @Nullable
         private String schoolID;
         
         public UserScore(){}
