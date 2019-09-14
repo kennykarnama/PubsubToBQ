@@ -6,6 +6,10 @@
 package com.mycompany.pubsubtobq;
 
 import com.google.api.services.bigquery.model.TableRow;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import org.apache.avro.reflect.Nullable;
 import org.apache.beam.sdk.coders.AvroCoder;
 import org.apache.beam.sdk.coders.DefaultCoder;
@@ -97,25 +101,37 @@ public class Leaderboard {
         public void ProcessElement(ProcessContext c) {
             try {
                 PubsubMessage message = c.element();
-                String eventSerial = message.getAttribute("eventSerial");
-                String segmentSerial = message.getAttribute("segmentSerial");
-                String userSerial = message.getAttribute("userSerial");
-                String duration = message.getAttribute("duration");
-                Float score = Float.parseFloat(message.getAttribute("score"));
-                Float scoreMultiplier = Float.parseFloat(message.getAttribute("scoreMultiplier"));
-                String createdAt = message.getAttribute("createdAt");
-                String updatedAt = message.getAttribute("updatedAt");
-                String schoolID = message.getAttribute("schoolID");
-                UserScore us = new UserScore(eventSerial,segmentSerial,userSerial,duration,
-                score,scoreMultiplier,createdAt,updatedAt,schoolID);
+                
+                byte[] data = message.getPayload();
+                
+                UserScore us = (UserScore) getObject(data);
+//                String eventSerial = message.getAttribute("eventSerial");
+//                String segmentSerial = message.getAttribute("segmentSerial");
+//                String userSerial = message.getAttribute("userSerial");
+//                String duration = message.getAttribute("duration");
+//                Float score = Float.parseFloat(message.getAttribute("score"));
+//                Float scoreMultiplier = Float.parseFloat(message.getAttribute("scoreMultiplier"));
+//                String createdAt = message.getAttribute("createdAt");
+//                String updatedAt = message.getAttribute("updatedAt");
+//                String schoolID = message.getAttribute("schoolID");
+//                UserScore us = new UserScore(eventSerial,segmentSerial,userSerial,duration,
+//                score,scoreMultiplier,createdAt,updatedAt,schoolID);
                 c.output(us);
-            }catch(NumberFormatException e) {
+            }catch(NumberFormatException|IOException|ClassNotFoundException e) {
                 LOG.info("Error ProcessElement ", c.element().toString()+" err -> "+e.getMessage());
                 numParseErrors.inc();
             }
             
         }
+        
+        private  Object getObject(byte[] byteArr) throws IOException, ClassNotFoundException {
+		ByteArrayInputStream bis = new ByteArrayInputStream(byteArr);
+		ObjectInput in = new ObjectInputStream(bis);
+		return in.readObject();
+	}
     }
+    
+    
     
     static class ParseUserScoreToTableRow extends DoFn<UserScore,TableRow> {
         private static final Logger LOG = LoggerFactory.getLogger(ParseUserScoreMessageFn.class);
