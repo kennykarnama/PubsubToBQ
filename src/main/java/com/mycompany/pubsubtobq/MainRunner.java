@@ -8,7 +8,6 @@ package com.mycompany.pubsubtobq;
 import com.google.api.services.bigquery.model.TableRow;
 import com.mycompany.pubsubtobq.Leaderboard.ParseUserScoreMessageFn;
 import com.mycompany.pubsubtobq.Leaderboard.ParseUserScoreToTableRow;
-import com.mycompany.pubsubtobq.Leaderboard.UserScore;
 import org.apache.beam.runners.dataflow.DataflowRunner;
 import org.apache.beam.runners.dataflow.options.DataflowPipelineOptions;
 import org.apache.beam.sdk.Pipeline;

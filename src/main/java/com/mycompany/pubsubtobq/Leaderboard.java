@@ -6,6 +6,8 @@
 package com.mycompany.pubsubtobq;
 
 import com.google.api.services.bigquery.model.TableRow;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -25,69 +27,7 @@ import org.slf4j.LoggerFactory;
  * @author kenny
  */
 public class Leaderboard {
-    @DefaultCoder(AvroCoder.class)
-    static class UserScore {
-        @Nullable String eventSerial;
-        @Nullable String segmentSerial;
-        @Nullable String userSerial;
-        @Nullable String duration;
-        @Nullable Float score;
-        @Nullable Float scoreMultipler;
-        @Nullable String createdAt;
-        @Nullable String updatedAt;
-        @Nullable String schoolID;
-        
-        public UserScore(){}
-        
-        public UserScore(String eventSerial, String segmentSerial, String userSerial, String duration,
-                Float score, Float scoreMultiplier, String createdAt, String updatedAt, String schoolID) {
-            this.eventSerial = eventSerial;
-            this.segmentSerial = segmentSerial;
-            this.userSerial = userSerial;
-            this.duration = duration;
-            this.score = score;
-            this.scoreMultipler = scoreMultiplier;
-            this.createdAt = createdAt;
-            this.updatedAt = updatedAt;
-            this.schoolID = schoolID;
-        }
-        public String getEventSerial() {
-            return eventSerial;
-        }
-
-        public String getSegmentSerial() {
-            return segmentSerial;
-        }
-
-        public String getUserSerial() {
-            return userSerial;
-        }
-
-        public String getDuration() {
-            return duration;
-        }
-
-        public Float getScore() {
-            return score;
-        }
-
-        public Float getScoreMultipler() {
-            return scoreMultipler;
-        }
-
-        public String getCreatedAt() {
-            return createdAt;
-        }
-
-        public String getUpdatedAt() {
-            return updatedAt;
-        }
-
-        public String getSchoolID() {
-            return schoolID;
-        }
-        
-    }
+    
     /**
      * ParseUserScoreMessageFn is a static class that extends DoFn
      * this static class is used to parse pubsub message
@@ -102,9 +42,11 @@ public class Leaderboard {
             try {
                 PubsubMessage message = c.element();
                 
-                byte[] data = message.getPayload();
+                String payload = message.getPayload().toString();
                 
-                UserScore us = (UserScore) getObject(data);
+                Gson gson = new Gson();
+                
+                UserScore us = gson.fromJson(payload, UserScore.class);
 //                String eventSerial = message.getAttribute("eventSerial");
 //                String segmentSerial = message.getAttribute("segmentSerial");
 //                String userSerial = message.getAttribute("userSerial");
@@ -117,7 +59,7 @@ public class Leaderboard {
 //                UserScore us = new UserScore(eventSerial,segmentSerial,userSerial,duration,
 //                score,scoreMultiplier,createdAt,updatedAt,schoolID);
                 c.output(us);
-            }catch(NumberFormatException|IOException|ClassNotFoundException e) {
+            }catch(NumberFormatException|JsonSyntaxException e) {
                 LOG.info("Error ProcessElement ", c.element().toString()+" err -> "+e.getMessage());
                 numParseErrors.inc();
             }
