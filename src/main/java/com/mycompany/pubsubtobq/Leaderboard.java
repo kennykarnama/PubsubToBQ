@@ -130,7 +130,7 @@ public class Leaderboard {
             row.set("user_serial",us.getUserSerial());
             row.set("duration", us.getDuration());
             row.set("score", us.getScore());
-            row.set("scoreMultiplier", us.getScoreMultipler());
+            row.set("score_multiplier", us.getScoreMultipler());
             row.set("created_at", us.getCreatedAt());
             row.set("updated_at", us.getUpdatedAt());
             row.set("school_id", us.getSchoolID());
