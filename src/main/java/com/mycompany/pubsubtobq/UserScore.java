@@ -5,20 +5,35 @@
  */
 package com.mycompany.pubsubtobq;
 
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
+import org.apache.beam.sdk.coders.AvroCoder;
+import org.apache.beam.sdk.coders.DefaultCoder;
+
 /**
  *
  * @author kenny
  */
-public class UserScore {
+@DefaultCoder(AvroCoder.class)
+public class UserScore implements Serializable{
 
-    private String eventSerial;
+        @SerializedName("eventSerial")
+        private String eventSerial;
+        @SerializedName("segmentSerial")
         private String segmentSerial;
+        @SerializedName("userSerial")
         private String userSerial;
+        @SerializedName("duration")
         private String duration;
+        @SerializedName("score")
         private Float score;
-        private Float scoreMultipler;
+        @SerializedName("scoreMultiplier")
+        private Float scoreMultiplier;
+        @SerializedName("createdAt")
         private String createdAt;
+        @SerializedName("updatedAt")
         private String updatedAt;
+        @SerializedName("schoolID")
         private String schoolID;
         
         public UserScore(){}
@@ -30,7 +45,7 @@ public class UserScore {
             this.userSerial = userSerial;
             this.duration = duration;
             this.score = score;
-            this.scoreMultipler = scoreMultiplier;
+            this.scoreMultiplier = scoreMultiplier;
             this.createdAt = createdAt;
             this.updatedAt = updatedAt;
             this.schoolID = schoolID;
@@ -57,7 +72,7 @@ public class UserScore {
     }
 
     public void setScoreMultipler(Float scoreMultipler) {
-        this.scoreMultipler = scoreMultipler;
+        this.scoreMultiplier = scoreMultipler;
     }
 
     public void setCreatedAt(String createdAt) {
@@ -95,7 +110,7 @@ public class UserScore {
         }
 
         public Float getScoreMultipler() {
-            return scoreMultipler;
+            return scoreMultiplier;
         }
 
         public String getCreatedAt() {
