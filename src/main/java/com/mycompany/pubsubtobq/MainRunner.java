@@ -69,6 +69,6 @@ public class MainRunner {
                 .withFailedInsertRetryPolicy(InsertRetryPolicy.retryTransientErrors())
                 .to(options.getBQTable())
         );
-        p.run();
+        p.run().waitUntilFinish();
     }
 }
