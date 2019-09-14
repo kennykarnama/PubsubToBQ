@@ -60,7 +60,7 @@ public class Leaderboard {
 //                score,scoreMultiplier,createdAt,updatedAt,schoolID);
                 c.output(us);
             }catch(NumberFormatException|JsonSyntaxException e) {
-                LOG.info("Error ProcessElement ", c.element().toString()+" err -> "+e.getMessage());
+                LOG.error("Error ProcessElement ", e.getMessage());
                 numParseErrors.inc();
             }
             
