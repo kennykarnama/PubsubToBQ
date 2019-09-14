@@ -96,15 +96,16 @@ public class Leaderboard {
         @ProcessElement
         public void ProcessElement(ProcessContext c) {
             try {
-                String eventSerial = c.element().getAttribute("eventSerial");
-                String segmentSerial = c.element().getAttribute("segmentSerial");
-                String userSerial = c.element().getAttribute("userSerial");
-                String duration = c.element().getAttribute("duration");
-                Float score = Float.parseFloat(c.element().getAttribute("score"));
-                Float scoreMultiplier = Float.parseFloat(c.element().getAttribute("scoreMultiplier"));
-                String createdAt = c.element().getAttribute("createdAt");
-                String updatedAt = c.element().getAttribute("updatedAt");
-                String schoolID = c.element().getAttribute("schoolID");
+                PubsubMessage message = c.element();
+                String eventSerial = message.getAttribute("eventSerial");
+                String segmentSerial = message.getAttribute("segmentSerial");
+                String userSerial = message.getAttribute("userSerial");
+                String duration = message.getAttribute("duration");
+                Float score = Float.parseFloat(message.getAttribute("score"));
+                Float scoreMultiplier = Float.parseFloat(message.getAttribute("scoreMultiplier"));
+                String createdAt = message.getAttribute("createdAt");
+                String updatedAt = message.getAttribute("updatedAt");
+                String schoolID = message.getAttribute("schoolID");
                 UserScore us = new UserScore(eventSerial,segmentSerial,userSerial,duration,
                 score,scoreMultiplier,createdAt,updatedAt,schoolID);
                 c.output(us);

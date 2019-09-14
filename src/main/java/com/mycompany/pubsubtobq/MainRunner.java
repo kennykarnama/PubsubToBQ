@@ -25,6 +25,13 @@ import org.apache.beam.sdk.transforms.ParDo;
 /**
  *
  * @author kenny
+ * To run this
+ * mvn compile exec:java -Dexec.mainClass=com.mycompany.pubsubtobq.MainRunner \
+     -Dexec.args="--runner=DataflowRunner --project=silicon-airlock-153323 \
+                  --gcpTempLocation=gs://dataflow-datalogger/temp \
+                  --pubsubTopic=projects/silicon-airlock-153323/topics/test_live_quiz_user_score\
+                  --BQTable=silicon-airlock-153323:live_quiz_staging.user_score"\
+                   -Pdataflow-runner
  */
 
 
